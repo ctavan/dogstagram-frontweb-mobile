@@ -4,7 +4,3 @@ This is the mobile version of Dogstagram on same React Native platform as the th
 
 # Progress Notes
 
-
-# dogstagram-frontweb-mobile
-# dogstagram-frontweb-mobile
-# dogstagram-frontweb-mobile
