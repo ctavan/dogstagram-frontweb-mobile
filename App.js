@@ -7,17 +7,33 @@
  */
 
 import React from 'react';
-import {StatusBar} from 'react-native';
 
 import AppNavigator from './src/navigation/AppNavigator';
+import {Provider} from 'react-redux';
+import {createStore, combineReducers, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
+import {StatusBar} from 'react-native';
 
-const App: () => React$Node = () => {
+//Reducers
+import userReducer from './src/redux/reducers/userReducer.js';
+import dogReducer from './src/redux/reducers/dogReducer';
+
+//create CombineReducer
+const rootReducer = combineReducers({
+  allUserInfo: userReducer,
+  allDogInfo: dogReducer,
+});
+
+//crete store
+const storeObj = createStore(rootReducer, applyMiddleware(thunk));
+
+export default function App() {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <AppNavigator />
+      <Provider store={storeObj}>
+        <AppNavigator />
+      </Provider>
     </>
   );
-};
-
-export default App;
+}
