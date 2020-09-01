@@ -17,11 +17,13 @@ import {StatusBar} from 'react-native';
 //Reducers
 import userReducer from './src/redux/reducers/userReducer.js';
 import dogReducer from './src/redux/reducers/dogReducer';
+import animationsReducer from './src/redux/reducers/animationsReducer';
 
 //create CombineReducer
 const rootReducer = combineReducers({
   allUserInfo: userReducer,
   allDogInfo: dogReducer,
+  allAnimationInfo: animationsReducer,
 });
 
 //crete store

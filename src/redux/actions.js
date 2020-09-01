@@ -1,10 +1,12 @@
 import axios from 'axios';
+import {Alert} from 'react-native';
 import {
   SET_USER,
   SET_HANDLE_CHECK,
   HANDLE_CHECKED,
   SET_LOGGED_IN_CHECK,
   SET_CURRENT_PROFILE,
+  SET_ANIMATION_STOP,
 } from './actionTypes';
 
 const ngrok = 'bdb2385dfc69.ngrok.io';
@@ -28,13 +30,33 @@ export const login = async (user, dispatch) => {
         dispatch({type: SET_USER, payload: userObj});
         dispatch({type: SET_LOGGED_IN_CHECK, payload: true});
         dispatch({type: SET_CURRENT_PROFILE, payload: userObj.user});
+        dispatch({type: SET_ANIMATION_STOP, payload: false});
       } else {
-        alert('Wrong username and/ore password, or user not found. Pls try again or signup if you are a new user');
+        Alert.alert(
+          'Login Error',
+          'Wrong username and/or password. Pls try again or signup if you are a new user',
+          [
+            {
+              text: 'OK',
+              onPress: () =>
+                dispatch({type: SET_ANIMATION_STOP, payload: false}),
+            },
+          ],
+        );
       }
     })
     .catch((error) => {
-        console.log('Error', error);
-        alert("Sorry, it's not you, it's us. We're experiencing technical difficulty right now");
+      console.log('Error', error);
+      Alert.alert(
+        'Connection Error',
+        "Sorry, it's not you, it's us. We're experiencing technical difficulty right now. Try again later",
+        [
+          {
+            text: 'OK',
+            onPress: () => dispatch({type: SET_ANIMATION_STOP, payload: false}),
+          },
+        ],
+      );
     });
 };
 
