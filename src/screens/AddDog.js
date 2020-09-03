@@ -17,21 +17,17 @@ import database from '@react-native-firebase/database';
 
 import {dogBreeds} from '../components/DogBreeds';
 import {range} from '../utils/HandyTools';
+import {useSelector} from 'react-redux';
 
-const AddDog = (props) => {
+const AddDog = ({navigation}) => {
   const [image, setImage] = useState(null);
-  const [userid, setUserid] = useState(null);
   const [name, setName] = useState(null);
   const [breed, setBreed] = useState('none chosen yet');
   const [age, setAge] = useState('no selection yet');
   const [temparament, setTemparament] = useState('no selection yet');
+  const user_id = useSelector((state) => state.allUserInfo.user.user.id);
 
-  //TODO
-  //use redux hook to pick off user id from user reducer
-  //and use that value and setUserid to set it when creating
-  //dog in submit function
-
-  const selectImage = (props) => {
+  const selectImage = () => {
     const options = {
       noData: true,
     };
@@ -53,9 +49,27 @@ const AddDog = (props) => {
     });
   };
 
+  const resetStates = () => {
+    setImage(null);
+    setName(null);
+    setBreed('none chosen yet');
+    setAge('no selection yet');
+    setTemparament('no selection yet');
+  };
+
+  const goToProfile = () => {
+    resetStates();
+    navigation.navigate('Profile');
+  };
+
+  const goToFeed = () => {
+    resetStates();
+    navigation.navigate('Feed');
+  };
+
   const onSubmit = () => {
     const dogForUpload = {
-      user_id: 1,
+      user_id: user_id,
       name: name,
       breed: breed,
       age: age,
@@ -88,14 +102,28 @@ const AddDog = (props) => {
       .ref('dogs/')
       .set(dogForUpload, function (error) {
         if (error) {
-          //Change 'response.error to a user friendly text string after tests
           Alert.alert('Error', error, [
             {
               text: 'OK',
             },
           ]);
         }
-      });
+      })
+      .then(() =>
+        Alert.alert('Upload Result', 'Successfully shared dog', [
+          {
+            text: 'Feed',
+            onPress: () => goToFeed(),
+          },
+          {
+            text: 'Share another dog',
+          },
+          {
+            text: 'Go To Profile',
+            onPress: () => goToProfile(),
+          },
+        ]),
+      );
   };
 
   //Placeholders

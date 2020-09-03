@@ -14,6 +14,7 @@ const initialState = {
   profilePicForUpload: '',
   checkIfLoggedIn: false,
   currentProfile: '',
+  user_id: '',
 };
 
 const userReducer = (state = initialState, action) => {

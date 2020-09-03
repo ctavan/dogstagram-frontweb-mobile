@@ -13,6 +13,11 @@ export const FeedNavigator = createAppContainer(
         headerTitleAlign: 'center',
       },
     },
+  }),
+);
+
+export const ProfileNavigator = createAppContainer(
+  createStackNavigator({
     Profile: {
       screen: Profile,
       navigationOptions: {
@@ -21,4 +26,4 @@ export const FeedNavigator = createAppContainer(
       },
     },
   }),
-)
+);

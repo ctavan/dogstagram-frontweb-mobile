@@ -7,7 +7,7 @@ import Activity from '../screens/Activity';
 import AddDog from '../screens/AddDog';
 import Search from '../screens/Search';
 
-import {FeedNavigator} from './StackNavigator';
+import {FeedNavigator, ProfileNavigator} from './StackNavigator';
 
 const TabNavigator = createBottomTabNavigator(
   {
@@ -64,7 +64,7 @@ const TabNavigator = createBottomTabNavigator(
       },
     },
     Profile: {
-      screen: FeedNavigator,
+      screen: ProfileNavigator,
       navigationOptions: {
         tabBarIcon: ({focused}) => (
           <Icon
