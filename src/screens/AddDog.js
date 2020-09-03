@@ -68,6 +68,20 @@ const AddDog = ({navigation}) => {
   };
 
   const onSubmit = () => {
+    if (image === null) {
+      return Alert.alert('No dog image attached. Please attach an image');
+    } else if (name === null) {
+      return Alert.alert('No dog name. Please give it a name');
+    } else if (breed === 'none chosen yet') {
+      return Alert.alert('No breed selected. Please selecte a breed');
+    } else if (age === 'no selection yet') {
+      return Alert.alert("No dog age. Please select dog's age");
+    } else if (temparament === 'no selection yet') {
+      return Alert.alert(
+        'No temparament selected. Please chose dog temparament',
+      );
+    }
+
     const dogForUpload = {
       user_id: user_id,
       name: name,
