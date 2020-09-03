@@ -9,7 +9,7 @@ import {
   SET_ANIMATION_STOP,
 } from './actionTypes';
 
-const ngrok = 'bdb2385dfc69.ngrok.io';
+const ngrok = '535704740bf6.ngrok.io';
 export const login = async (user, dispatch) => {
   await fetch(`https://${ngrok}/login`, {
     method: 'POST',

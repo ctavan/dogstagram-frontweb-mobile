@@ -8,11 +8,15 @@
 
 import React from 'react';
 
-import AppNavigator from './src/navigation/AppNavigator';
 import {Provider} from 'react-redux';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import {StatusBar} from 'react-native';
+import {mapping, light} from '@eva-design/eva';
+import {ApplicationProvider, IconRegistry} from 'react-native-ui-kitten';
+import {EvaIconsPack} from '@ui-kitten/eva-icons';
+
+import AppNavigator from './src/navigation/AppNavigator';
 
 //Reducers
 import userReducer from './src/redux/reducers/userReducer.js';
@@ -33,9 +37,12 @@ export default function App() {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <Provider store={storeObj}>
-        <AppNavigator />
-      </Provider>
+      <IconRegistry icons={EvaIconsPack} />
+      <ApplicationProvider mapping={mapping} theme={light}>
+        <Provider store={storeObj}>
+          <AppNavigator />
+        </Provider>
+      </ApplicationProvider>
     </>
   );
 }
