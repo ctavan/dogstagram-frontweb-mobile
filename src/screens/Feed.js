@@ -1,76 +1,92 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, TouchableOpacity, StyleSheet, Image, Text} from 'react-native';
-import {Avatar, List} from 'react-native-ui-kitten';
-
+import {Avatar, List, withStyles} from 'react-native-ui-kitten';
 import {useDispatch, useSelector} from 'react-redux';
-import {SET_CURRENT_PROFILE} from '../redux/actionTypes';
+import database from '@react-native-firebase/database';
 
-const DATA = [
-  {
-    id: '1',
-    handle: 'tobenna',
-    postTitle: 'Planet of Nature',
-    avatarURI:
-      'https://images.unsplash.com/photo-1559526323-cb2f2fe2591b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
-    imageURI:
-      'https://images.unsplash.com/photo-1482822683622-00effad5052e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
-    randomText:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
-  },
-  {
-    id: '2',
-    handle: 'ikechukwu',
-    postTitle: 'Lampost',
-    avatarURI:
-      'https://images.unsplash.com/photo-1559526323-cb2f2fe2591b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
-    imageURI:
-      'https://images.unsplash.com/photo-1482822683622-00effad5052e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
-    randomText:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
-  },
-  {
-    id: '2',
-    handle: 'ikechukwu',
-    postTitle: 'Lampost',
-    avatarURI:
-      'https://images.unsplash.com/photo-1559526323-cb2f2fe2591b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
-    imageURI:
-      'https://images.unsplash.com/photo-1482822683622-00effad5052e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
-    randomText:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
-  },
-];
+import {SET_CURRENT_PROFILE, SET_ANIMATION_START} from '../redux/actionTypes';
+import Loader from '../animations/Loader';
+import {login, fetchUser} from '../redux/actions';
 
 const Feed = (props) => {
+  const [data, setData] = useState(null);
+  const [isRefreshing, setIsRefreshing] = useState(true);
+  const [currentStartPoint, setCurrentStartPoint] = useState(1);
+
   const dispatch = useDispatch();
   const handle = useSelector(
     (state) => state.allUserInfo.currentProfile.handle,
   );
 
+  //put useEffect here
+  // useEffect(() => {
+  //   fetchDogs();
+  // }, [isRefreshing]);
+
+  useEffect(() => {
+    async function fetchData() {
+      await database()
+        .ref('dogs')
+        .limitToFirst(10)
+        .once('value')
+        .then((snapshot) => {
+          let allDogs = [];
+          let returnedDogs = snapshot.val();
+
+          Object.keys(returnedDogs).forEach(function (thisDog) {
+            allDogs.push(returnedDogs[thisDog]);
+          });
+          // console.log(allDogs);
+
+          setData(allDogs);
+          // setIsRefreshing(false);
+
+          // return allDogs;
+        });
+    }
+    fetchData();
+  }, [isRefreshing]);
+
   const handleAvatarTouch = (item) => {
-    dispatch({
-      type: SET_CURRENT_PROFILE,
-      payload: item,
-    });
+    fetchUser(handle, dispatch);
+    dispatch({type: SET_ANIMATION_START, payload: true});
     props.navigation.navigate('Profile', {
       handle: handle,
     });
   };
 
-  const renderItem = ({item}) => (
+  const onRefresh = () => {
+    setIsRefreshing(true);
+    //fetchDogs
+  };
+
+  const renderItem = (item) => (
     <View style={styles.card}>
       <Image
         source={{
-          uri: item.imageURI,
+          uri: item.item.photo.uri,
         }}
         style={styles.cardImage}
       />
       <View style={styles.cardHeader}>
-        <Text style={styles.cardTitle}> {item.postTitle} </Text>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={styles.cardTitle}> {item.item.name} </Text>
+          <Text style={styles.cardTitle}> {item.item.breed} </Text>
+          <Text style={styles.cardTitle}> {item.item.age} </Text>
+          <Text style={styles.cardTitle}> {item.item.temparament} </Text>
+          <Text style={styles.cardTitle}> {item.item.likes.length} </Text>
+          {/*add dog display first three likers.name and an onPress
+          eventListener that will load all likers handles with an
+          eventListener to go to their profile. This should apply to comments
+          and replies too */}
+
+          {/*add dog comments components here */}
+          {/*add dog replies here components here */}
+        </View>
         <TouchableOpacity onPress={() => handleAvatarTouch(item)}>
           <Avatar
             source={{
-              uri: item.avatarURI,
+              uri: item.item.photo.uri,
             }}
             size="small"
             style={styles.cardAvatar}
@@ -78,19 +94,29 @@ const Feed = (props) => {
         </TouchableOpacity>
       </View>
       <View style={styles.cardContent}>
-        <Text> {item.randomText} </Text>
+        {/* <Text> {dog.randomText} </Text> */}
       </View>
     </View>
   );
 
-  return (
-    <List
-      style={styles.container}
-      data={DATA}
-      renderItem={renderItem}
-      keyExtractor={DATA.id}
-    />
-  );
+  if (data !== null) {
+    return (
+      <List
+        style={styles.container}
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={data.id}
+        refreshing={isRefreshing}
+        onRefresh={() => onRefresh()}
+      />
+    );
+  } else {
+    return (
+      <View>
+        <Loader />
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -112,7 +138,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   cardTitle: {
-    color: '#151A30',
+    color: 'black',
     fontWeight: 'bold',
     fontSize: 20,
     // fontWeight: '500',

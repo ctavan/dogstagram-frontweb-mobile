@@ -10,6 +10,8 @@ import {
 } from './actionTypes';
 
 const ngrok = '535704740bf6.ngrok.io';
+
+//USER STUFF
 export const login = async (user, dispatch) => {
   await fetch(`https://${ngrok}/login`, {
     method: 'POST',
@@ -95,4 +97,11 @@ export const signup = (user, dispatch) => {
       alert('Unable to create account');
       console.log('Error', error);
     });
+};
+
+export const fetchUser = async (userHandle, dispatch) => {
+  await axios.get(`http://${ngrok}/users/${userHandle}`).then((fetchedUser) => {
+    dispatch({type: SET_CURRENT_PROFILE, payload: fetchedUser.data});
+    dispatch({type: SET_ANIMATION_STOP, payload: false});
+  });
 };
