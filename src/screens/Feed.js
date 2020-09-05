@@ -1,22 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import {View, TouchableOpacity, StyleSheet, Image, Text} from 'react-native';
-import {Avatar, List, withStyles} from 'react-native-ui-kitten';
-import {useDispatch, useSelector} from 'react-redux';
+import {Avatar, List} from 'react-native-ui-kitten';
+import {useDispatch} from 'react-redux';
 import database from '@react-native-firebase/database';
 
-import {SET_CURRENT_PROFILE, SET_ANIMATION_START} from '../redux/actionTypes';
+import {SET_ANIMATION_START} from '../redux/actionTypes';
 import Loader from '../animations/Loader';
-import {login, fetchUser} from '../redux/actions';
+import {fetchUser} from '../redux/actions';
 
 const Feed = (props) => {
   const [data, setData] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(true);
-  const [currentStartPoint, setCurrentStartPoint] = useState(1);
-
   const dispatch = useDispatch();
-  const handle = useSelector(
-    (state) => state.allUserInfo.currentProfile.handle,
-  );
 
   useEffect(() => {
     async function fetchData() {
@@ -39,8 +34,6 @@ const Feed = (props) => {
   }, [isRefreshing]);
 
   const handleAvatarTouch = (dogUserID) => {
-    console.log(dogUserID);
-
     fetchUser(dogUserID, dispatch);
     dispatch({type: SET_ANIMATION_START, payload: true});
     props.navigation.navigate('Profile', {
@@ -85,7 +78,6 @@ const Feed = (props) => {
 
           <View style={{flexDirection: 'column'}}>
             <Text style={styles.dogDetailTitle}> Likes </Text>
-            {console.log(Object.keys(item.item.likes).length)}
             <Text style={styles.dogDetailText}>{Object.keys(item.item.likes).length}</Text>
           </View>
 
@@ -106,9 +98,6 @@ const Feed = (props) => {
             style={styles.cardAvatar}
           />
         </TouchableOpacity>
-      </View>
-      <View style={styles.cardContent}>
-        {/* <Text> {dog.randomText} </Text> */}
       </View>
     </View>
   );
