@@ -18,11 +18,6 @@ const Feed = (props) => {
     (state) => state.allUserInfo.currentProfile.handle,
   );
 
-  //put useEffect here
-  // useEffect(() => {
-  //   fetchDogs();
-  // }, [isRefreshing]);
-
   useEffect(() => {
     async function fetchData() {
       await database()
@@ -38,8 +33,6 @@ const Feed = (props) => {
           });
           setData(allDogs);
           setIsRefreshing(false);
-
-          // return allDogs;
         });
     }
     fetchData();
@@ -57,7 +50,7 @@ const Feed = (props) => {
 
   const onRefresh = () => {
     setIsRefreshing(true);
-    //fetchDogs
+    //N/B: SetIsRefreshing triggers a re-render, so that's enough
   };
 
   const renderItem = (item) => (
@@ -70,11 +63,32 @@ const Feed = (props) => {
       />
       <View style={styles.cardHeader}>
         <View style={{flexDirection: 'row'}}>
-          <Text style={styles.cardTitle}> {item.item.name} </Text>
-          <Text style={styles.cardTitle}> {item.item.breed} </Text>
-          <Text style={styles.cardTitle}> {item.item.age} </Text>
-          <Text style={styles.cardTitle}> {item.item.temparament} </Text>
-          <Text style={styles.cardTitle}> {item.item.likes.length} </Text>
+          <View style={{flexDirection: 'column'}}>
+            <Text style={styles.dogDetailTitle}> Name </Text>
+            <Text style={styles.dogDetailText}> {item.item.name} </Text>
+          </View>
+
+          <View style={{flexDirection: 'column'}}>
+            <Text style={styles.dogDetailTitle}> Breed </Text>
+            <Text style={styles.dogDetailText}> {item.item.breed} </Text>
+          </View>
+
+          <View style={{flexDirection: 'column'}}>
+            <Text style={styles.dogDetailTitle}> Age </Text>
+            <Text style={styles.dogDetailText}> {item.item.age} </Text>
+          </View>
+
+          <View style={{flexDirection: 'column'}}>
+            <Text style={styles.dogDetailTitle}> Temparament </Text>
+            <Text style={styles.dogDetailText}> {item.item.temparament} </Text>
+          </View>
+
+          <View style={{flexDirection: 'column'}}>
+            <Text style={styles.dogDetailTitle}> Likes </Text>
+            {console.log(Object.keys(item.item.likes).length)}
+            <Text style={styles.dogDetailText}>{Object.keys(item.item.likes).length}</Text>
+          </View>
+
           {/*add dog display first three likers.name and an onPress
           eventListener that will load all likers handles with an
           eventListener to go to their profile. This should apply to comments
@@ -137,11 +151,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  cardTitle: {
-    color: 'black',
+  dogDetailTitle: {
+    height: 20,
     fontWeight: 'bold',
-    fontSize: 20,
-    // fontWeight: '500',
+    fontSize: 12,
+    color: 'black',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    textShadowColor: '#585858',
+    textShadowOffset: {width: 5, height: 5},
+    textShadowRadius: 10,
+  },
+  dogDetailText: {
+    height: 20,
+    color: 'brown',
+    textAlign: 'center',
+    fontSize: 12,
+    textAlignVertical: 'center',
   },
   cardAvatar: {
     marginRight: 16,
