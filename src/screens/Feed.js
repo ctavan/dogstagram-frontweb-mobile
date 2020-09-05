@@ -36,10 +36,8 @@ const Feed = (props) => {
           Object.keys(returnedDogs).forEach(function (thisDog) {
             allDogs.push(returnedDogs[thisDog]);
           });
-          // console.log(allDogs);
-
           setData(allDogs);
-          // setIsRefreshing(false);
+          setIsRefreshing(false);
 
           // return allDogs;
         });
@@ -47,11 +45,13 @@ const Feed = (props) => {
     fetchData();
   }, [isRefreshing]);
 
-  const handleAvatarTouch = (item) => {
-    fetchUser(handle, dispatch);
+  const handleAvatarTouch = (dogUserhandle) => {
+    console.log(dogUserhandle)
+
+    fetchUser(dogUserhandle, dispatch);
     dispatch({type: SET_ANIMATION_START, payload: true});
     props.navigation.navigate('Profile', {
-      handle: handle,
+      handle: dogUserhandle,
     });
   };
 
@@ -83,7 +83,7 @@ const Feed = (props) => {
           {/*add dog comments components here */}
           {/*add dog replies here components here */}
         </View>
-        <TouchableOpacity onPress={() => handleAvatarTouch(item)}>
+        <TouchableOpacity onPress={() => handleAvatarTouch(item.item.user_id)}>
           <Avatar
             source={{
               uri: item.item.photo.uri,
