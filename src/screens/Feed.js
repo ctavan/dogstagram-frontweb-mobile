@@ -45,13 +45,13 @@ const Feed = (props) => {
     fetchData();
   }, [isRefreshing]);
 
-  const handleAvatarTouch = (dogUserhandle) => {
-    console.log(dogUserhandle)
+  const handleAvatarTouch = (dogUserID) => {
+    console.log(dogUserID);
 
-    fetchUser(dogUserhandle, dispatch);
+    fetchUser(dogUserID, dispatch);
     dispatch({type: SET_ANIMATION_START, payload: true});
     props.navigation.navigate('Profile', {
-      handle: dogUserhandle,
+      handle: dogUserID,
     });
   };
 
