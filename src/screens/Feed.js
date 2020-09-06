@@ -41,9 +41,7 @@ const Feed = (props) => {
   const handleAvatarTouch = (dogUserID) => {
     fetchUser(dogUserID, dispatch);
     dispatch({type: SET_ANIMATION_START, payload: true});
-    props.navigation.navigate('Profile', {
-      handle: dogUserID,
-    });
+    props.navigation.navigate('Profile');
   };
 
   const onRefresh = () => {

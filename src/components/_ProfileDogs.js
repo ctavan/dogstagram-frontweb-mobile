@@ -15,7 +15,7 @@ const _ProfileDogs = (props) => {
         .orderByChild('user_id')
         .equalTo(currenUserID)
         .on('child_added', function (snapshot) {
-          console.log(snapshot.key);
+          console.log(snapshot.val());
           setCurrentUserDogs(snapshot.key);
         });
     }

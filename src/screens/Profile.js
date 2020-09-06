@@ -1,5 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable jsx-quotes */
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -17,58 +18,77 @@ import {
   Button,
   // Text,
 } from 'react-native-ui-kitten';
-
-import _ProfileDogs from '../components/_ProfileDogs';
+import database from '@react-native-firebase/database';
 
 const Profile = () => {
   const profile = useSelector((state) => state.allUserInfo.currentProfile);
   const dispatch = useDispatch();
+  const [dogs, setDogs] = useState(null);
+  const ngrok = '535704740bf6.ngrok.io';
+
   console.log(profile);
+  const currentUser_ID = profile.id;
+
+  useEffect(() => {
+    async function fetchDogs() {
+      let fetchedDogs = [];
+      await database()
+        .ref('dogs')
+        .orderByChild('user_id')
+        .equalTo(currentUser_ID)
+        .on('child_added', function (snapshot) {
+          let returnedDogs = snapshot.val();
+          if (snapshot.val() != null) {
+            Object.keys(returnedDogs).forEach(function (thisDog) {
+              fetchedDogs.push(returnedDogs[thisDog]);
+            });
+          } else {
+            console.log(fetchedDogs);
+          }
+          setDogs(fetchedDogs);
+        });
+    }
+    fetchDogs();
+  }, [currentUser_ID]);
+
+  // console.log(dogs);
+  // style = {
+  //   styles.container
+  // }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.profileHeader}>
+    <SafeAreaView>
+      <View style={styles.root}>
         <View style={(styles.header, styles.bordered)}>
           <Avatar
             source={{
-              uri:
-                'whatever path to profile photo gotten from the backend and stored in the userReduser currentProfile',
-              //and imported into this compments as profile using useSelector
+              uri: `https://${ngrok}/${profile.photo_url
+                .split('/')
+                .slice(3)
+                .join('/')}`,
             }}
             size="giant"
             style={{width: 100, height: 100}}
           />
-          <Text category="h6" style={styles.text}>
-            Test user
-          </Text>
+          <Text style={styles.text}>{profile.name}</Text>
         </View>
 
-        <View style={(styles.userInfo, styles.bordered)}>
-          <View style={styles.section}>
-            <Text category="s1" style={styles.space}>
-              {Object.keys(_ProfileDogs).length}
-            </Text>
-            <Text appearance="hint" category="s2">
-              Dogs
-            </Text>
-          </View>
+        <View style={styles.bordered}>
+          <View Views style={styles.userInfo}>
+            <View style={styles.section}>
+              <Text style={styles.space}>4</Text>
+              <Text style={styles.space2}>Dogs</Text>
+            </View>
 
-          <View style={styles.section}>
-            <Text category="s1" style={styles.space}>
-              0
-            </Text>
-            <Text appearance="hint" category="s2">
-              Followers
-            </Text>
-          </View>
+            <View style={styles.section}>
+              <Text style={styles.space}>0</Text>
+              <Text style={styles.space2}>Followers</Text>
+            </View>
 
-          <View style={styles.section}>
-            <Text category="s1" style={styles.space}>
-              0
-            </Text>
-            <Text appearance="hint" category="s2">
-              Following
-            </Text>
+            <View style={styles.section}>
+              <Text style={styles.space}>0</Text>
+              <Text style={styles.space2}>Following</Text>
+            </View>
           </View>
         </View>
 
@@ -85,7 +105,7 @@ const Profile = () => {
 
           <Button
             style={styles.button}
-            appearance="hint"
+            appearance="ghost"
             status="danger"
             onPress={() => console.log('message pressed')}>
             MESSAGE
@@ -100,41 +120,35 @@ const Profile = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  profileHeader: {
-    backgroundColor: '#fff2f2',
-    height: '30%',
-  },
-  dogsContainer: {
-    backgroundColor: '#fff2f2',
-    height: '70%',
-  },
   root: {
     backgroundColor: '#ffffff',
-    marginTop: 60
+    // marginTop: 10,
   },
   header: {
     alignItems: 'center',
     paddingTop: 25,
-    paddingBottom: 17
+    paddingBottom: 17,
   },
   userInfo: {
     flexDirection: 'row',
-    paddingVertical: 18
+    paddingVertical: 18,
   },
   bordered: {
     borderBottomWidth: 1,
-    borderColor: '#e4e9f2'
+    borderColor: '#e4e9f2',
+    alignItems: 'center',
   },
   section: {
-    flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    marginHorizontal: '5%',
   },
   space: {
-    marginBottom: 3,
-    color: '#151a30'
+    color: '#151a30',
+    fontWeight: 'bold',
+  },
+  space2: {
+    color: '#aab9b7',
+    fontWeight: 'bold',
   },
   separator: {
     backgroundColor: '#e4e9f2',
@@ -150,20 +164,12 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   text: {
-    color: '#151a30'
-  }
+    color: '#151a30',
+    fontWeight: 'bold',
+  },
 });
-
-// const styleUI = withStyles( theme => ({
-//   root: {
-//     backgroundColor: theme['color-basic-100']
-//   }
-
-
-
-// }))
 
 export default Profile;
