@@ -22,12 +22,17 @@ const Feed = (props) => {
         .then((snapshot) => {
           let allDogs = [];
           let returnedDogs = snapshot.val();
-
-          Object.keys(returnedDogs).forEach(function (thisDog) {
-            allDogs.push(returnedDogs[thisDog]);
-          });
-          setData(allDogs);
-          setIsRefreshing(false);
+          if (snapshot.val() != null) {
+            Object.keys(returnedDogs).forEach(function (thisDog) {
+              allDogs.push(returnedDogs[thisDog]);
+            });
+            setData(allDogs);
+            setIsRefreshing(false);
+          } else {
+            console.log(allDogs);
+            setData(allDogs);
+            setIsRefreshing(false);
+          }
         });
     }
     fetchData();
