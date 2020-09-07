@@ -26,7 +26,7 @@ const Profile = () => {
   const [dogs, setDogs] = useState(null);
   const ngrok = '535704740bf6.ngrok.io';
 
-  console.log(profile);
+  // console.log(profile);
   const currentUser_ID = profile.id;
 
   useEffect(() => {
@@ -43,13 +43,13 @@ const Profile = () => {
               fetchedDogs.push(returnedDogs[thisDog]);
             });
           } else {
-            console.log(fetchedDogs);
+            // console.log(fetchedDogs);
           }
           setDogs(fetchedDogs);
         });
     }
     fetchDogs();
-  }, [currentUser_ID]);
+  }, []);
 
   // console.log(dogs);
   // style = {
@@ -70,7 +70,7 @@ const Profile = () => {
             size="giant"
             style={{width: 100, height: 100}}
           />
-          <Text style={styles.text}>{profile.name}</Text>
+          <Text style={styles.text}>{profile.handle}</Text>
         </View>
 
         <View style={styles.bordered}>

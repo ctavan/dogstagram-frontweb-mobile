@@ -11,7 +11,7 @@ import {FeedNavigator, ProfileNavigator} from './StackNavigator';
 
 const TabNavigator = createBottomTabNavigator(
   {
-    Feed: {
+    Home: {
       screen: FeedNavigator,
       navigationOptions: {
         tabBarIcon: ({focused}) => (
@@ -66,6 +66,9 @@ const TabNavigator = createBottomTabNavigator(
     Profile: {
       screen: ProfileNavigator,
       navigationOptions: {
+        onTransitionEnd: () => {
+          console.log('res  tProfile');
+        },
         tabBarIcon: ({focused}) => (
           <Icon
             name="person-outline"
@@ -79,7 +82,7 @@ const TabNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      showLabel: false,
+      showLabel: true,
     },
   },
 );
