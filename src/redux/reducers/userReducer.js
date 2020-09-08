@@ -5,6 +5,8 @@ import {
   SET_PROFILE_PICTURE,
   SET_LOGGED_IN_CHECK,
   SET_CURRENT_PROFILE,
+  RESET_CURRENT_PROFILE,
+  LOGOUT,
 } from '../actionTypes';
 
 const initialState = {
@@ -13,8 +15,9 @@ const initialState = {
   handleChecked: '',
   profilePicForUpload: '',
   checkIfLoggedIn: false,
-  currentProfile: '',
+  currentProfile: null,
   user_id: '',
+  currentUserID: 0,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -50,6 +53,24 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         currentProfile: action.payload,
+      };
+    case RESET_CURRENT_PROFILE:
+      console.log('in reducer');
+      return {
+        ...state,
+        currentProfile: action.payload,
+      };
+    case LOGOUT:
+      return {
+        ...state,
+        user: '',
+        handleAvailable: '',
+        handleChecked: '',
+        profilePicForUpload: '',
+        checkIfLoggedIn: false,
+        currentProfile: '',
+        user_id: '',
+        currentUserID: 0,
       };
 
     default:

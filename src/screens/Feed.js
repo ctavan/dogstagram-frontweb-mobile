@@ -8,7 +8,7 @@ import {SET_ANIMATION_START} from '../redux/actionTypes';
 import Loader from '../animations/Loader';
 import {fetchUser} from '../redux/actions';
 
-const Feed = (props) => {
+const Feed = ({navigation}) => {
   const [data, setData] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(true);
   const dispatch = useDispatch();
@@ -26,10 +26,10 @@ const Feed = (props) => {
             Object.keys(returnedDogs).forEach(function (thisDog) {
               allDogs.push(returnedDogs[thisDog]);
             });
+            console.log(allDogs);
             setData(allDogs);
             setIsRefreshing(false);
           } else {
-            console.log(allDogs);
             setData(allDogs);
             setIsRefreshing(false);
           }
@@ -41,7 +41,7 @@ const Feed = (props) => {
   const handleAvatarTouch = (dogUserID) => {
     fetchUser(dogUserID, dispatch);
     dispatch({type: SET_ANIMATION_START, payload: true});
-    props.navigation.navigate('Profile');
+    navigation.navigate('Profile');
   };
 
   const onRefresh = () => {
@@ -81,7 +81,9 @@ const Feed = (props) => {
 
           <View style={{flexDirection: 'column'}}>
             <Text style={styles.dogDetailTitle}> Likes </Text>
-            <Text style={styles.dogDetailText}>{Object.keys(item.item.likes).length}</Text>
+            <Text style={styles.dogDetailText}>
+              {Object.keys(item.item.likes).length}
+            </Text>
           </View>
 
           {/*add dog display first three likers.name and an onPress

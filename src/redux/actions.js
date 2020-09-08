@@ -7,6 +7,8 @@ import {
   SET_LOGGED_IN_CHECK,
   SET_CURRENT_PROFILE,
   SET_ANIMATION_STOP,
+  RESET_CURRENT_PROFILE,
+  LOGOUT,
 } from './actionTypes';
 
 const ngrok = '535704740bf6.ngrok.io';
@@ -27,7 +29,7 @@ export const login = async (user, dispatch) => {
     .then((response) => response.json())
     .then((userObj) => {
       console.log(userObj);
-      console.log(userObj.errors);
+      // console.log(userObj.errors);
       if (!userObj.errors) {
         dispatch({type: SET_USER, payload: userObj});
         dispatch({type: SET_LOGGED_IN_CHECK, payload: true});
@@ -94,7 +96,7 @@ export const signup = (user, dispatch) => {
       dispatch({type: SET_LOGGED_IN_CHECK, payload: true});
     })
     .catch((error) => {
-      alert('Unable to create account');
+      Alert.alert('Unable to create account');
       console.log('Error', error);
     });
 };
@@ -104,4 +106,12 @@ export const fetchUser = async (userHandle, dispatch) => {
     dispatch({type: SET_CURRENT_PROFILE, payload: fetchedUser.data});
     dispatch({type: SET_ANIMATION_STOP, payload: false});
   });
+};
+
+export const resetCurrentProfile = (dispatch) => {
+  dispatch({type: RESET_CURRENT_PROFILE, payload: null});
+};
+
+export const logout = (dispatch) => {
+  dispatch({type: LOGOUT});
 };

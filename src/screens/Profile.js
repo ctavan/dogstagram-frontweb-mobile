@@ -10,51 +10,33 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  Layout,
-  list,
-  withStyles,
-  Avatar,
-  Button,
-  // Text,
-} from 'react-native-ui-kitten';
+import {Layout, list, Avatar, Button} from 'react-native-ui-kitten';
 import database from '@react-native-firebase/database';
+import {logout} from '../redux/actions';
 
-const Profile = () => {
+import _ProfileDogs from '../components/_ProfileDogs';
+
+const Profile = ({navigation}) => {
   const profile = useSelector((state) => state.allUserInfo.currentProfile);
+  const currentUser_ID = useSelector(
+    (state) => state.allUserInfo.currentUserID,
+  );
   const dispatch = useDispatch();
   const [dogs, setDogs] = useState(null);
   const ngrok = '535704740bf6.ngrok.io';
+  const checkIfLoggedIn = useSelector(
+    (state) => state.allUserInfo.checkIfLoggedIn,
+  );
 
-  // console.log(profile);
-  const currentUser_ID = profile.id;
+  const handleLogout = () => {
+    logout(dispatch);
+    navigation.navigate('LoginSignupScreen');
+  };
 
-  useEffect(() => {
-    async function fetchDogs() {
-      let fetchedDogs = [];
-      await database()
-        .ref('dogs')
-        .orderByChild('user_id')
-        .equalTo(currentUser_ID)
-        .on('child_added', function (snapshot) {
-          let returnedDogs = snapshot.val();
-          if (snapshot.val() != null) {
-            Object.keys(returnedDogs).forEach(function (thisDog) {
-              fetchedDogs.push(returnedDogs[thisDog]);
-            });
-          } else {
-            // console.log(fetchedDogs);
-          }
-          setDogs(fetchedDogs);
-        });
-    }
-    fetchDogs();
-  }, []);
-
-  // console.log(dogs);
-  // style = {
-  //   styles.container
-  // }
+  if (checkIfLoggedIn === false) {
+    console.log('yes its false');
+    navigation.navigate('LoginSignupScreen');
+  }
 
   return (
     <SafeAreaView>
@@ -97,7 +79,7 @@ const Profile = () => {
             style={styles.button}
             appearance="ghost"
             status="danger"
-            onPress={() => console.log('logout pressed')}>
+            onPress={() => handleLogout()}>
             LOGOUT
           </Button>
 
@@ -113,7 +95,7 @@ const Profile = () => {
         </View>
       </View>
       <View style={styles.dogsContainer}>
-        <Text> Dogs container </Text>
+        {/* <_ProfileDogs items={dogs} /> */}
       </View>
     </SafeAreaView>
   );

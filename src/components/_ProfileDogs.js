@@ -1,36 +1,53 @@
 import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
-import database from '@react-native-firebase/database';
+import {View, FlatList, Dimensions, StyleSheet, Image, TouchableOpacity} from 'react-native';
 
 import Loader from '../animations/Loader';
 
 const _ProfileDogs = (props) => {
-  const {currenUserID} = props;
-  const [currentUserDogs, setCurrentUserDogs] = useState([]);
+  // const {currenUserID} = props;
+  const itemSize = (Dimensions.get('window').width - 12) / 3;
+  const [currentUserDogs, setCurrentUserDogs] = useState(props.dogs);
+  const [total, setTotal] = useState(props.items.length);
 
-  useEffect(() => {
-    async function fetchCurrentUserDogs() {
-      await database()
-        .ref('dogs')
-        .orderByChild('user_id')
-        .equalTo(currenUserID)
-        .on('child_added', function (snapshot) {
-          console.log(snapshot.val());
-          setCurrentUserDogs(snapshot.key);
-        });
-    }
-    fetchCurrentUserDogs();
-  }, [currenUserID]);
+  const extractItemKey = (index) => `${index}`;
 
-  if (currentUserDogs.length === 0) {
-    return (
-      <View>
-        <Loader />
-      </View>
-    );
-  } else {
-    return currentUserDogs;
-  }
+  const renderItem = ({item, index}) => (
+    <React.Fragment>
+      <TouchableOpacity onPress={() => alert('add functionality to open')}>
+        <Image
+          style={{
+            width: itemSize,
+            height: itemSize,
+            margin: 1.5,
+          }}
+          source={item}
+        />
+      </TouchableOpacity>
+    </React.Fragment>
+  );
+
+  return (
+    <View style={styles.images}>
+      <FlatList
+        data={currentUserDogs}
+        numColumns={3}
+        keyExtractor={extractItemKey}
+        renderItem={renderItem}
+      />
+    </View>
+  );
 };
+
+const styles = StyleSheet.create({
+  images: {
+    flexDirection: 'row',
+    paddingHorizontal: 0.5,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
+  },
+});
 
 export default _ProfileDogs;

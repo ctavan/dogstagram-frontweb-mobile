@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, TextInput, SafeAreaView, Button} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 
@@ -10,11 +10,13 @@ import {SET_ANIMATION_START} from '../redux/actionTypes';
 const LoginSignupScreen = ({navigation}) => {
   const [handle, setHandle] = useState('@handle');
   const [password, setPassword] = useState('password');
+  const [componentLoginCheck, setComponentLoginCheck] = useState(false);
   const dispatch = useDispatch();
   const checkIfLoggedIn = useSelector(
     (state) => state.allUserInfo.checkIfLoggedIn,
   );
   const isLoading = useSelector((state) => state.allAnimationInfo.isLoading);
+
 
   const handleSubmit = async () => {
     dispatch({type: SET_ANIMATION_START, payload: true});
@@ -24,10 +26,12 @@ const LoginSignupScreen = ({navigation}) => {
     };
 
     await login(user, dispatch);
+    setComponentLoginCheck(true);
   };
 
   if (checkIfLoggedIn) {
-    console.log(checkIfLoggedIn);
+    console.log(componentLoginCheck);
+    console.log(navigation.navigate('SignedInUser'));
     navigation.navigate('SignedInUser');
   }
 
