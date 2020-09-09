@@ -14,19 +14,20 @@ import {Layout, list, Avatar, Button} from 'react-native-ui-kitten';
 import database from '@react-native-firebase/database';
 import {logout} from '../redux/actions';
 
-import _ProfileDogs from '../components/_ProfileDogs';
-
+import ProfileDogs from '../components/ProfileDogs'
 const Profile = ({navigation}) => {
   const profile = useSelector((state) => state.allUserInfo.currentProfile);
   const currentUser_ID = useSelector(
     (state) => state.allUserInfo.currentUserID,
   );
   const dispatch = useDispatch();
-  const [dogs, setDogs] = useState(null);
   const ngrok = '535704740bf6.ngrok.io';
   const checkIfLoggedIn = useSelector(
     (state) => state.allUserInfo.checkIfLoggedIn,
   );
+  const dogs = useSelector((state) => state.allDogInfo.allDogs);
+  // console.log(dogs);
+
 
   const handleLogout = () => {
     logout(dispatch);
@@ -34,7 +35,6 @@ const Profile = ({navigation}) => {
   };
 
   if (checkIfLoggedIn === false) {
-    console.log('yes its false');
     navigation.navigate('LoginSignupScreen');
   }
 
@@ -95,7 +95,7 @@ const Profile = ({navigation}) => {
         </View>
       </View>
       <View style={styles.dogsContainer}>
-        {/* <_ProfileDogs items={dogs} /> */}
+        <ProfileDogs items={dogs} />
       </View>
     </SafeAreaView>
   );

@@ -30,8 +30,6 @@ const LoginSignupScreen = ({navigation}) => {
   };
 
   if (checkIfLoggedIn) {
-    console.log(componentLoginCheck);
-    console.log(navigation.navigate('SignedInUser'));
     navigation.navigate('SignedInUser');
   }
 

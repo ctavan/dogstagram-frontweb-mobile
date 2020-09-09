@@ -6,7 +6,7 @@ import database from '@react-native-firebase/database';
 
 import {SET_ANIMATION_START} from '../redux/actionTypes';
 import Loader from '../animations/Loader';
-import {fetchUser} from '../redux/actions';
+import {fetchUser, setDogsToReduxStore} from '../redux/actions';
 
 const Feed = ({navigation}) => {
   const [data, setData] = useState(null);
@@ -26,17 +26,19 @@ const Feed = ({navigation}) => {
             Object.keys(returnedDogs).forEach(function (thisDog) {
               allDogs.push(returnedDogs[thisDog]);
             });
-            console.log(allDogs);
+            // console.log(allDogs);
             setData(allDogs);
+            setDogsToReduxStore(allDogs, dispatch);
             setIsRefreshing(false);
           } else {
+            setDogsToReduxStore(allDogs, dispatch);
             setData(allDogs);
             setIsRefreshing(false);
           }
         });
     }
     fetchData();
-  }, [isRefreshing]);
+  }, []);
 
   const handleAvatarTouch = (dogUserID) => {
     fetchUser(dogUserID, dispatch);
@@ -46,7 +48,6 @@ const Feed = ({navigation}) => {
 
   const onRefresh = () => {
     setIsRefreshing(true);
-    //N/B: SetIsRefreshing triggers a re-render, so that's enough
   };
 
   const renderItem = (item) => (

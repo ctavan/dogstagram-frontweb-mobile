@@ -9,6 +9,7 @@ import {
   SET_ANIMATION_STOP,
   RESET_CURRENT_PROFILE,
   LOGOUT,
+  SET_DOGS,
 } from './actionTypes';
 
 const ngrok = '535704740bf6.ngrok.io';
@@ -29,7 +30,6 @@ export const login = async (user, dispatch) => {
     .then((response) => response.json())
     .then((userObj) => {
       console.log(userObj);
-      // console.log(userObj.errors);
       if (!userObj.errors) {
         dispatch({type: SET_USER, payload: userObj});
         dispatch({type: SET_LOGGED_IN_CHECK, payload: true});
@@ -66,7 +66,6 @@ export const login = async (user, dispatch) => {
 
 export const checkHandle = (handle, dispatch) => {
   axios.get(`http://${ngrok}/users/checkhandle/${handle}`).then((r) => {
-    console.log(r.data);
     dispatch({type: HANDLE_CHECKED, payload: true});
     dispatch({type: SET_HANDLE_CHECK, payload: r.data});
   });
@@ -114,4 +113,8 @@ export const resetCurrentProfile = (dispatch) => {
 
 export const logout = (dispatch) => {
   dispatch({type: LOGOUT});
+};
+
+export const setDogsToReduxStore = (dogs, dispatch) => {
+  dispatch({type: SET_DOGS, payload: dogs});
 };

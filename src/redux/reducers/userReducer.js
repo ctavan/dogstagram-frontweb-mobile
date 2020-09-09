@@ -55,7 +55,6 @@ const userReducer = (state = initialState, action) => {
         currentProfile: action.payload,
       };
     case RESET_CURRENT_PROFILE:
-      console.log('in reducer');
       return {
         ...state,
         currentProfile: action.payload,

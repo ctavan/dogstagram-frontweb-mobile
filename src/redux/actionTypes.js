@@ -9,7 +9,8 @@ export const RESET_CURRENT_PROFILE = 'RESET_CURRENT_PROFILE';
 export const LOGOUT = 'LOGOUT';
 
 //DOG STUFF
-export const SET_DOG = 'SET_DOG';
+export const SET_DOGS = 'SET_DOGS';
+export const SET_CURRENT_DOG = 'SET_CURRENT_DOG';
 
 //ANIMATION STUFF
 export const SET_ANIMATION_START = 'SET_ANIMATION_START';

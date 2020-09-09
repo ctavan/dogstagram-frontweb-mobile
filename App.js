@@ -19,7 +19,7 @@ import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import AppNavigator from './src/navigation/AppNavigator';
 
 //Reducers
-import userReducer from './src/redux/reducers/userReducer.js';
+import userReducer from './src/redux/reducers/userReducer';
 import dogReducer from './src/redux/reducers/dogReducer';
 import animationsReducer from './src/redux/reducers/animationsReducer';
 

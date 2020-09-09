@@ -1,15 +1,15 @@
-import {SET_DOG} from '../actionTypes';
+import {SET_DOGS} from '../actionTypes';
 
 const initialState = {
-  dog: 'nkita',
+  allDogs: [],
 };
 
 const dogReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_DOG:
+    case SET_DOGS:
       return {
         ...state,
-        dog: action.payload,
+        allDogs: action.payload,
       };
 
     default:
