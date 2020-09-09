@@ -26,19 +26,17 @@ const Feed = ({navigation}) => {
             Object.keys(returnedDogs).forEach(function (thisDog) {
               allDogs.push(returnedDogs[thisDog]);
             });
-            // console.log(allDogs);
             setData(allDogs);
             setDogsToReduxStore(allDogs, dispatch);
             setIsRefreshing(false);
           } else {
-            setDogsToReduxStore(allDogs, dispatch);
             setData(allDogs);
             setIsRefreshing(false);
           }
         });
     }
     fetchData();
-  }, []);
+  }, [isRefreshing]);
 
   const handleAvatarTouch = (dogUserID) => {
     fetchUser(dogUserID, dispatch);
