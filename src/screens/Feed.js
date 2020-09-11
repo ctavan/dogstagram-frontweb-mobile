@@ -57,28 +57,28 @@ const Feed = ({navigation}) => {
         style={styles.cardImage}
       />
       <View style={styles.cardHeader}>
-        <View style={{flexDirection: 'row'}}>
-          <View style={{flexDirection: 'column'}}>
+        <View style={{flexDirection: 'row', width: '95%'}}>
+          <View style={{flexDirection: 'column', width: '15%'}}>
             <Text style={styles.dogDetailTitle}> Name </Text>
             <Text style={styles.dogDetailText}> {item.item.name} </Text>
           </View>
 
-          <View style={{flexDirection: 'column'}}>
+          <View style={{flexDirection: 'column', width: '40%'}}>
             <Text style={styles.dogDetailTitle}> Breed </Text>
             <Text style={styles.dogDetailText}> {item.item.breed} </Text>
           </View>
 
-          <View style={{flexDirection: 'column'}}>
+          <View style={{flexDirection: 'column', width: '8%'}}>
             <Text style={styles.dogDetailTitle}> Age </Text>
             <Text style={styles.dogDetailText}> {item.item.age} </Text>
           </View>
 
-          <View style={{flexDirection: 'column'}}>
+          <View style={{flexDirection: 'column', width: '26%'}}>
             <Text style={styles.dogDetailTitle}> Temparament </Text>
             <Text style={styles.dogDetailText}> {item.item.temparament} </Text>
           </View>
 
-          <View style={{flexDirection: 'column'}}>
+          <View style={{flexDirection: 'column', width: '11%'}}>
             <Text style={styles.dogDetailTitle}> Likes </Text>
             <Text style={styles.dogDetailText}>
               {Object.keys(item.item.likes).length}
@@ -128,24 +128,24 @@ const Feed = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
   },
   card: {
     backgroundColor: '#fff2f2',
     marginBottom: 25,
   },
   cardImage: {
-    width: '100%',
+    // width: '100%',
     height: 300,
   },
   cardHeader: {
     padding: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
   },
   dogDetailTitle: {
-    height: 20,
+    // height: 20,
     fontWeight: 'bold',
     fontSize: 12,
     color: 'black',
@@ -156,11 +156,14 @@ const styles = StyleSheet.create({
     textShadowRadius: 10,
   },
   dogDetailText: {
-    height: 20,
+    // height: 20,
+    flex: 0.5,
+    // width: '90%',
     color: 'brown',
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 11,
     textAlignVertical: 'center',
+    flexWrap: 'wrap',
   },
   cardAvatar: {
     marginRight: 16,
