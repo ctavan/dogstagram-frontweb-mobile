@@ -14,7 +14,7 @@ import ImagePicker from 'react-native-image-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import {Icon} from 'react-native-ui-kitten';
 import database from '@react-native-firebase/database';
-import uuid from 'uuid-random';
+import {v4 as uuid} from 'uuid';
 
 import {dogBreeds} from '../components/DogBreeds';
 import {range} from '../utils/HandyTools';
