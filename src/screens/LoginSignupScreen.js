@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, TextInput, SafeAreaView, Button} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import {v4 as uuid} from 'uuid';
 
 import {login} from '../redux/actions';
 import Header from '../components/Header';
@@ -35,7 +36,7 @@ const LoginSignupScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title={'DogStagram'} />
+      <Header title={uuid()} />
       <Loader loading={isLoading} />
       <View style={styles.formContainer}>
         <TextInput
